@@ -1,13 +1,26 @@
-import { useMemo } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 export default function Header() {
 
     const { pathname } = useLocation()
     const isHome = useMemo(() => pathname === '/', [pathname])
+
+    const [searchParams, setSearchParams] = useState({
+      ingredient: '',
+      category: ''
+    })
+
+    function handleChange(
+        e: ChangeEvent<HTMLInputElement> | 
+        ChangeEvent<HTMLSelectElement>){
+          setSearchParams({
+            ...searchParams, [e.target.name]: e.target.value
+          })
+    }
     
     return (
-      <header className="bg-slate-800">
+      <header className={ isHome ? 'bg-header bg-cover': 'bg-slate-800' }>
           <div className="mx-auto container px-5 py-16">
               <div className="flex justify-between items-center">
                   <div>
@@ -44,6 +57,7 @@ export default function Header() {
                         id='ingredient'
                         type="text" 
                         name="ingredient"
+                        onChange={handleChange}
                         className="p-3 w-full rounded-lg focus:outline-none"
                         placeholder="Nombre o Ingrediente. Ej. Vodka, Tequila Café"
                         />
@@ -56,6 +70,7 @@ export default function Header() {
                       </label>
                       <select 
                         id='category'
+                        onChange={handleChange}
                         name="category"
                         className="p-3 w-full rounded-lg focus:outline-none"
                         >
