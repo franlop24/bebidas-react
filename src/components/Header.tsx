@@ -1,15 +1,21 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAppStore } from "../stores/useAppStore";
 
 export default function Header() {
 
     const { pathname } = useLocation()
     const isHome = useMemo(() => pathname === '/', [pathname])
-
     const [searchParams, setSearchParams] = useState({
       ingredient: '',
       category: ''
     })
+
+    const fetchCategories = useAppStore((state) => state.fetchCategories)
+
+    useEffect(() => {
+      fetchCategories()
+    }, [])
 
     function handleChange(
         e: ChangeEvent<HTMLInputElement> | 
@@ -20,7 +26,7 @@ export default function Header() {
     }
     
     return (
-      <header className={ isHome ? 'bg-header bg-cover': 'bg-slate-800' }>
+      <header className={ isHome ? 'bg-header bg-cover bg-center': 'bg-slate-800' }>
           <div className="mx-auto container px-5 py-16">
               <div className="flex justify-between items-center">
                   <div>
