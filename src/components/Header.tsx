@@ -12,6 +12,8 @@ export default function Header() {
     })
 
     const fetchCategories = useAppStore((state) => state.fetchCategories)
+    const categories = useAppStore((state) => state.categories)
+    console.log(categories)
 
     useEffect(() => {
       fetchCategories()
@@ -64,6 +66,7 @@ export default function Header() {
                         type="text" 
                         name="ingredient"
                         onChange={handleChange}
+                        value={searchParams.ingredient}
                         className="p-3 w-full rounded-lg focus:outline-none"
                         placeholder="Nombre o Ingrediente. Ej. Vodka, Tequila Café"
                         />
@@ -77,10 +80,21 @@ export default function Header() {
                       <select 
                         id='category'
                         onChange={handleChange}
+                        value={searchParams.category}
                         name="category"
                         className="p-3 w-full rounded-lg focus:outline-none"
                         >
                           <option value="">-- Seleccione --</option>
+                          {
+                            categories.drinks.map(category => 
+                              (
+                              <option 
+                                key={category.strCategory}
+                                value={category.strCategory}
+                                >
+                                  {category.strCategory}
+                                </option>))
+                          }
                         </select>
                   </div>
                   <input 
