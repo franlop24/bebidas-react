@@ -1,5 +1,6 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAppStore } from "../stores/useAppStore";
 
 export default function Header() {
     const { pathname } = useLocation()
@@ -8,6 +9,14 @@ export default function Header() {
         ingredient: '',
         category: ''
     })
+
+    const categories = useAppStore((state) => state.categories)
+    const fetchCategories = useAppStore((state) => state.fetchCategories)
+    console.log(categories)
+
+    useEffect(() => {
+      fetchCategories()
+    }, [])
 
     function handleChange(
         e: ChangeEvent<HTMLInputElement> | 
